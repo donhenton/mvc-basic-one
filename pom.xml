@@ -98,35 +98,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
-              reinstate this for local, DO NOT LEAVE IT IN WHEN PUSHING
-              TO HEROKU
-              
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <executions>
-                    <execution>
-                        <id>local-run</id>
-                        <phase>package</phase>  
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                             
-                            
-                            <arguments>
-                                <argument>-jar</argument>
-                                <argument>${basedir}/target/dependency/jetty-runner.jar</argument>
-                                <argument>${basedir}/target/${artifactId}-${version}.war</argument>
-                            </arguments>
-                             <executable>/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/java</executable>
-                      </configuration>                        
-                    </execution>
-                </executions>
-            </plugin>  
-            -->
+     
         </plugins>
     </build>
     
@@ -200,9 +172,8 @@
     
     <properties>
         <java.version>1.7</java.version>
-        <org.springframework.version>4.2.6.RELEASE</org.springframework.version>
- 
-        <org.springframework.security-version>4.2.6.RELEASE</org.springframework.security-version>
+        <org.springframework.version>4.3.7.RELEASE</org.springframework.version>
+        <org.springframework.security-version>4.2.13.RELEASE</org.springframework.security-version>
         <tiles.version>3.0.5</tiles.version>   
         <jetty.version>9.3.0.M1</jetty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -581,22 +552,7 @@
             <version>1.0.2</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.5.0</version>
-        </dependency>
-   
+ 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

@@ -6,6 +6,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:url var="baseURL" value="/" />
+<c:url value="/logout" var="logoutUrl"/>
 <%
 
     String path = request.getContextPath();
@@ -47,7 +48,7 @@
                         
                         <sec:authorize access="isFullyAuthenticated()">
                             <li class="pull-right">
-                                <a href="<c:out value="${baseURL}logout"/>">Logout</a>
+                                <a href="<c:out value="${logoutUrl}"/>">Logout</a>
                             </li>
                         </sec:authorize>
                         
