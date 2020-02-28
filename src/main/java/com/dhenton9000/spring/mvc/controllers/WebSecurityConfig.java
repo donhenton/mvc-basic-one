@@ -11,7 +11,6 @@ that allows customization to both WebSecurity and HttpSecurity.
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import  org.springframework.security.oauth2.jwt.JwtDecoderFactory;
 
 @Configuration
 @PropertySource(value = "classpath:config.properties")
@@ -51,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
 
         LOG.info("called configure");
-
+ 
         http.authorizeRequests()
                 .antMatchers("/oauth_login", "/loginFailure", "/")
                 .permitAll()
@@ -69,6 +67,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .defaultSuccessUrl("/loginSuccess")
                 .failureUrl("/loginFailure");
+ 
+
+  
 
     }
 
