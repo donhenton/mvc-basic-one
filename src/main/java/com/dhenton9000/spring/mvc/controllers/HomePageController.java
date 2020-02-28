@@ -3,10 +3,11 @@ package com.dhenton9000.spring.mvc.controllers;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.apache.log4j.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomePageController {
 
-    private static Logger log = LogManager.getLogger(HomePageController.class);
+    private static Logger log = LoggerFactory.getLogger(HomePageController.class);
 
     /**
      * To handle the regular request to the application context. e.g.

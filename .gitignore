@@ -9,3 +9,5 @@ target/
 .idea
 SpringMVC3-app.iml
 nbactions.xml
+/src/main/resources/config.properties
+/nbactions.tmp
