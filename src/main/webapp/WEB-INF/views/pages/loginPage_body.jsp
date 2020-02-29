@@ -8,7 +8,7 @@
                         <ul>
                         <c:forEach items="${urls}" var="url" varStatus="status">
 
-                        <li><a  class="list-group-item active href="<c:out value="${url.value}"/>"><c:out value="${url.key}" /> Client</a></li>
+                        <li><a  class="list-group-item active" href="<c:out value="${url.value}"/>"><c:out value="${url.key}" /> Client</a></li>
                         </c:forEach>
                         </ul>
 		</div>

@@ -33,7 +33,8 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.apache.commons.beanutils.MethodUtils;
-
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 
 @Configuration
 @PropertySource(value = "classpath:config.properties")
@@ -51,15 +52,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
 
         LOG.info("called configure");
- 
+
         http.authorizeRequests()
-                .antMatchers("/oauth_login","/login**", "/logout**","/resources/**"  )
+                .antMatchers("/oauth_login", "/login**", "/logout**", "/resources/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .oauth2Login()
-                .loginPage("/oauth_login");
+                .clientRegistrationRepository(clientRegistrationRepository())
+                .authorizedClientService(authorizedClientService());
+        // .loginPage("/oauth_login");
 //                .authorizationEndpoint()
 //                .baseUri("/oauth2/authorize-client")
 //                .authorizationRequestRepository(authorizationRequestRepository())
@@ -69,9 +72,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .defaultSuccessUrl("/loginSuccess")
 //                .failureUrl("/loginFailure");
- 
-
-  
 
     }
 
@@ -108,6 +108,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
         return accessTokenResponseClient;
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientService authorizedClientService() {
+
+        return new InMemoryOAuth2AuthorizedClientService(
+                clientRegistrationRepository());
     }
 
 }
