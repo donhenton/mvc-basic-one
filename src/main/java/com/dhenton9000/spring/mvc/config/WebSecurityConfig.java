@@ -88,9 +88,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         String issuer = env.getProperty(CLIENT_PROPERTY_KEY + "okta.issuer");
         String authorizationUri = issuer + "/v1/authorize";
         String tokenUri = issuer + "/v1/token";
+        String jwkUri = issuer + "/v1/keys";
 
         ClientRegistration reg = CommonOAuth2Provider.OKTA.getBuilder("okta")
                 .clientId(clientId)
+                .jwkSetUri(jwkUri)
                 .clientSecret(clientSecret)
                 .authorizationUri(authorizationUri)
                 .tokenUri(tokenUri)
