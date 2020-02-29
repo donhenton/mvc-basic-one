@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Don
  *
  */
-@Controller
-public class HomePageController {
+//@Controller
+public class NotUsedHomePageController {
 
-    private static Logger log = LoggerFactory.getLogger(HomePageController.class);
+    private static Logger log = LoggerFactory.getLogger(NotUsedHomePageController.class);
 
     /**
      * To handle the regular request to the application context. e.g.

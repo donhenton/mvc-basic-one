@@ -1,4 +1,4 @@
-package com.dhenton9000.spring.mvc.controllers;
+package com.dhenton9000.spring.mvc.config;
 
 /*
 
@@ -32,6 +32,8 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.apache.commons.beanutils.MethodUtils;
+
 
 @Configuration
 @PropertySource(value = "classpath:config.properties")
@@ -51,22 +53,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOG.info("called configure");
  
         http.authorizeRequests()
-                .antMatchers("/oauth_login", "/loginFailure", "/")
+                .antMatchers("/oauth_login","/login**", "/logout**","/resources/**"  )
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .oauth2Login()
-                .loginPage("/oauth_login")
-                .authorizationEndpoint()
-                .baseUri("/oauth2/authorize-client")
-                .authorizationRequestRepository(authorizationRequestRepository())
-                .and()
-                .tokenEndpoint()
-                .accessTokenResponseClient(accessTokenResponseClient())
-                .and()
-                .defaultSuccessUrl("/loginSuccess")
-                .failureUrl("/loginFailure");
+                .loginPage("/oauth_login");
+//                .authorizationEndpoint()
+//                .baseUri("/oauth2/authorize-client")
+//                .authorizationRequestRepository(authorizationRequestRepository())
+//                .and()
+//                .tokenEndpoint()
+//                .accessTokenResponseClient(accessTokenResponseClient())
+//                .and()
+//                .defaultSuccessUrl("/loginSuccess")
+//                .failureUrl("/loginFailure");
  
 
   
