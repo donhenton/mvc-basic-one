@@ -60,9 +60,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .oauth2Login()
-                .clientRegistrationRepository(clientRegistrationRepository())
-                .authorizedClientService(authorizedClientService());
-        // .loginPage("/oauth_login");
+              //  .clientRegistrationRepository(clientRegistrationRepository())
+                .authorizedClientService(authorizedClientService())
+          .loginPage("/oauth_login");
 //                .authorizationEndpoint()
 //                .baseUri("/oauth2/authorize-client")
 //                .authorizationRequestRepository(authorizationRequestRepository())
@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public ClientRegistrationRepository clientRegistrationRepository() {
         List<ClientRegistration> registrations = new ArrayList<ClientRegistration>();
         String clientId = env.getProperty(CLIENT_PROPERTY_KEY + "okta.client-id");
-        String clientSecret = env.getProperty(CLIENT_PROPERTY_KEY + "okta.client-id");
+        String clientSecret = env.getProperty(CLIENT_PROPERTY_KEY + "okta.client-secret");
         String issuer = env.getProperty(CLIENT_PROPERTY_KEY + "okta.issuer");
         String authorizationUri = issuer + "/v1/authorize";
         String tokenUri = issuer + "/v1/token";

@@ -55,7 +55,7 @@ public class LoginController {
                         authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
         model.addAttribute("urls", oauth2AuthenticationUrls);
         
-        return "tiles.login.failure";
+        return "tiles.login";
     }
     
     
