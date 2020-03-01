@@ -3,7 +3,9 @@
 <div class="container">
 	<div class="col-sm-3 well">
 		<h3>Index Page</h3>
-		${data} 
+		<p>${data} </p>
+                 <p>${user} </p>
+                <p>${userx}</p>
 	</div>
 </div>
 
