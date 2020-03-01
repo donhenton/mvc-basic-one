@@ -35,6 +35,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.apache.commons.beanutils.MethodUtils;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @PropertySource(value = "classpath:config.properties")
@@ -60,9 +61,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .oauth2Login()
-              //  .clientRegistrationRepository(clientRegistrationRepository())
+                //  .clientRegistrationRepository(clientRegistrationRepository())
                 .authorizedClientService(authorizedClientService())
-          .loginPage("/oauth_login");
+                .loginPage("/oauth_login")
+                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/logoutdone").deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true) ;
 //                .authorizationEndpoint()
 //                .baseUri("/oauth2/authorize-client")
 //                .authorizationRequestRepository(authorizationRequestRepository())

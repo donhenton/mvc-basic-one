@@ -39,6 +39,11 @@ public class LoginController {
         
         return "tile.login.failure";
     }
+     @GetMapping("/logoutdone")
+    public String getLoginOut(Model model) {
+        
+        return "tiles.logout";
+    }
 
     @GetMapping("/oauth_login")
     public String getLoginPage(Model model) {
