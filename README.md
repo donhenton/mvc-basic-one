@@ -13,3 +13,5 @@ https://www.baeldung.com/spring-security-5-oauth2-login
 * https://github.com/OhadR/oAuth2-sample/blob/master/oauth2-client/src/main/webapp/WEB-INF/spring-servlet.xml
 
 https://developer.okta.com/blog/2017/12/18/spring-security-5-oidc
+
+https://docs.spring.io/spring-security/site/docs/current/reference/html5/

@@ -3,7 +3,7 @@
 <div class="container">
 	<div class="col-sm-3 well">
 		<h3>Index Page</h3>
-		 
+		${data} 
 	</div>
 </div>
 
