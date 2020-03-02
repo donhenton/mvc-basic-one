@@ -33,8 +33,15 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.apache.commons.beanutils.MethodUtils;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -61,7 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .oauth2Login()
-                //  .clientRegistrationRepository(clientRegistrationRepository())
+                .userInfoEndpoint(userInfoEndpoint ->
+                        userInfoEndpoint.oidcUserService(this.oidcUserService())    
+                    )
                 .authorizedClientService(authorizedClientService())
                 .loginPage("/oauth_login")
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -78,10 +87,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .failureUrl("/loginFailure");
 
     }
-
-    //https://www.baeldung.com/spring-security-5-oauth2-login
-    //https://github.com/eugenp/tutorials/blob/master/spring-5-security-oauth/src/main/java/com/baeldung/oauth2/SecurityConfig.java
-    //https://developer.okta.com/docs/reference/api/oidc/
     private static List<String> clients = Arrays.asList("okta");
 
     @Bean
@@ -123,4 +128,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 clientRegistrationRepository());
     }
 
+    //https://stackoverflow.com/questions/55894402/principalextractor-and-authoritiesextractor-are-not-getting-called
+   //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2login-advanced-map-authorities-oauth2userservice
+    //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2login-advanced-map-authorities-grantedauthoritiesmapper
+    
+    private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
+        final OidcUserService delegate = new OidcUserService();
+
+        return (userRequest) -> {
+            // Delegate to the default implementation for loading a user
+            OidcUser oidcUser = delegate.loadUser(userRequest);
+            LOG.debug("hit user service "+userRequest.toString());
+
+//            OAuth2AccessToken accessToken = userRequest.getAccessToken();
+//            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+
+            // TODO
+            // 1) Fetch the authority information from the protected resource using accessToken
+            // 2) Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
+
+            // 3) Create a copy of oidcUser but use the mappedAuthorities instead
+           // oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
+           
+           
+           
+           
+            return oidcUser;
+        };
+    }
 }
