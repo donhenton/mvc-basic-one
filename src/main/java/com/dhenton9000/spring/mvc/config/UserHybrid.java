@@ -58,17 +58,17 @@ public class UserHybrid extends DefaultOidcUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return true; //since you got thru login on okta
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return true; //since you got thru login on okta
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; //since you got thru login on okta
     }
 
 }

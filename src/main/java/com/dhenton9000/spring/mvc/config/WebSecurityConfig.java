@@ -101,8 +101,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .clientId(clientId)
                 .jwkSetUri(jwkUri)
                 .clientSecret(clientSecret)
-                .scope("groups", "openid", "email", "profile")
-                .userInfoUri(userInfoUri)
+               // .scope("groups", "openid", "email", "profile")
+              //  .userInfoUri(userInfoUri)
                 .authorizationUri(authorizationUri)
                 .tokenUri(tokenUri)
                 .build();
@@ -124,8 +124,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return (userRequest) -> {
 
             OidcUser oidcUser = delegate.loadUser(userRequest);
-            LOG.debug("hit user service " + oidcUser.getClass().getName());
-
             OAuth2AccessToken accessToken = userRequest.getAccessToken();
             List<GrantedAuthority> mappedAuthorities = this.decodeGroups(accessToken.getTokenValue());
             UserHybrid hybrid = new UserHybrid(mappedAuthorities,
