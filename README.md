@@ -23,3 +23,6 @@ https://docs.spring.io/spring-security/site/docs/current/reference/html5/
 
 
 https://www.baeldung.com/spring-security-taglibs
+
+
+https://www.devglan.com/spring-security/spring-boot-security-google-oauth

@@ -4,17 +4,21 @@
 <div class="container">
 	<div class="col-sm-11 well">
 		<h3>Index Page</h3>
-		 
-                 <p>Principal: ${principal} </p>
-                <p>SecObject: ${secObject}</p>
+		 <ul>
+                    <li>Principal: ${principal} </li>
+                    <li>SecObject: ${secObject}</li>
+                    <li>The class for principal in Sec Tags <sec:authentication property="principal.class.name"/></li>
+                    <li>UserName from Sec Tags Principal: <sec:authentication property="principal.username"/></li>
+
+                 </ul>
 	</div>
 </div>
 
  
  
 
-<h3<Secure Page</h3>
+<h3>Security Tag</h3>
 
 <div class="well">
-The class for principal in tags <sec:authentication property="principal.class.name"/>
+
 </div

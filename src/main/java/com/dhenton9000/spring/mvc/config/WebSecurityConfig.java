@@ -131,6 +131,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // Delegate to the default implementation for loading a user
             OidcUser oidcUser = delegate.loadUser(userRequest);
             LOG.debug("hit user service "+oidcUser.getClass().getName());
+           // super(authorities, idToken, userInfo, nameAttributeKey);
+            UserHybrid hybrid = new UserHybrid(oidcUser.getAuthorities(), 
+                    oidcUser.getIdToken(), oidcUser.getUserInfo());
 
 //            OAuth2AccessToken accessToken = userRequest.getAccessToken();
 //            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
@@ -144,9 +147,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           
            
            
-           OAuth2AuthenticationToken ccc;
+        
             
-            return oidcUser;
+            return hybrid;
         };
     }
 }
