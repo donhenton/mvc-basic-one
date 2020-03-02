@@ -8,6 +8,7 @@ that allows customization to both WebSecurity and HttpSecurity.
 
 
  */
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,26 +24,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
-import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.apache.commons.beanutils.MethodUtils;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 @Configuration
 @PropertySource(value = "classpath:config.properties")
@@ -110,16 +102,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new InMemoryClientRegistrationRepository(registrations);
     }
 
-    @Bean
-    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
-        return new HttpSessionOAuth2AuthorizationRequestRepository();
-    }
-
-    @Bean
-    public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
-        DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
-        return accessTokenResponseClient;
-    }
+//    @Bean
+//    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
+//        return new HttpSessionOAuth2AuthorizationRequestRepository();
+//    }
+//
+//    @Bean
+//    public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
+//        DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
+//        return accessTokenResponseClient;
+//    }
 
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
@@ -138,7 +130,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return (userRequest) -> {
             // Delegate to the default implementation for loading a user
             OidcUser oidcUser = delegate.loadUser(userRequest);
-            LOG.debug("hit user service "+userRequest.toString());
+            LOG.debug("hit user service "+oidcUser.getClass().getName());
 
 //            OAuth2AccessToken accessToken = userRequest.getAccessToken();
 //            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
@@ -149,10 +141,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             // 3) Create a copy of oidcUser but use the mappedAuthorities instead
            // oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
+          
            
            
-           
-           
+           OAuth2AuthenticationToken ccc;
+            
             return oidcUser;
         };
     }

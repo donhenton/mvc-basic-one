@@ -26,3 +26,12 @@ java -jar target/dependency/jetty-runner.jar target/SpringMVC3-app-1.0-SNAPSHOT.
 
 /Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/java  -jar target/dependency/jetty-runner.jar target/SpringMVC3-app-1.0-SNAPSHOT.war
 ```
+
+
+
+### Standard items in the security context
+
+* Class for Principal: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+* Class for SecurityContext: org.springframework.security.core.userdetails.User
+
+ 

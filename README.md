@@ -20,3 +20,6 @@ https://docs.spring.io/spring-security/site/docs/current/reference/html5/
     //https://www.baeldung.com/spring-security-5-oauth2-login
     //https://github.com/eugenp/tutorials/blob/master/spring-5-security-oauth/src/main/java/com/baeldung/oauth2/SecurityConfig.java
     //https://developer.okta.com/docs/reference/api/oidc/
+
+
+https://www.baeldung.com/spring-security-taglibs
