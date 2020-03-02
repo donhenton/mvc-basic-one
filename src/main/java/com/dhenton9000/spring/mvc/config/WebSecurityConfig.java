@@ -13,11 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +39,6 @@ import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 @Configuration
@@ -114,16 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new InMemoryClientRegistrationRepository(registrations);
     }
 
-//    @Bean
-//    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
-//        return new HttpSessionOAuth2AuthorizationRequestRepository();
-//    }
-//
-//    @Bean
-//    public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
-//        DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
-//        return accessTokenResponseClient;
-//    }
+ 
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
 
