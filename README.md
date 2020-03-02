@@ -26,3 +26,9 @@ https://www.baeldung.com/spring-security-taglibs
 
 
 https://www.devglan.com/spring-security/spring-boot-security-google-oauth
+
+
+https://developer.okta.com/blog/2017/10/13/okta-groups-spring-security
+
+
+https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1

@@ -6,9 +6,11 @@
 		<h3>Index Page</h3>
 		 <ul>
                     <li>Principal: ${principal} </li>
+                    <li>Authorities: ${authorities} </li>
                     <li>SecObject: ${secObject}</li>
                     <li>The class for principal in Sec Tags <sec:authentication property="principal.class.name"/></li>
                     <li>UserName from Sec Tags Principal: <sec:authentication property="principal.username"/></li>
+                     <li>Sec Tag Roles: <sec:authentication property="principal.authorities"/></li>
 
                  </ul>
 	</div>
@@ -20,5 +22,5 @@
 <h3>Security Tag</h3>
 
 <div class="well">
-
+<p>${token}</p>
 </div

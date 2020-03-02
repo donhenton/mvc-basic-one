@@ -43,7 +43,7 @@ public class MainController {
         // OAuth2AuthenticationToken t = (OAuth2AuthenticationToken) principal;
         // the principal can be cast to OAuth2AuthenticationToken
         
-        ;
+         
         
         OAuth2User item = token.getPrincipal();
         Map<String, Object> user = (Map<String, Object>) item.getAttributes();
@@ -61,8 +61,8 @@ public class MainController {
         }
          
          model.addAttribute("secObject", secObject.getClass().getName());
-        
-        
+        model.addAttribute("token",token);
+        model.addAttribute("authorities",authorities);
 
         return new ModelAndView("tiles.index");
     }
