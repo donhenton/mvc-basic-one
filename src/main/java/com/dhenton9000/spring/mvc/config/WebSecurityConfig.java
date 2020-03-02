@@ -8,10 +8,16 @@ that allows customization to both WebSecurity and HttpSecurity.
 
 
  */
-import java.security.Principal;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +30,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -35,6 +43,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 @Configuration
 @PropertySource(value = "classpath:config.properties")
@@ -60,14 +69,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .oauth2Login()
-                .userInfoEndpoint(userInfoEndpoint ->
-                        userInfoEndpoint.oidcUserService(this.oidcUserService())    
-                    )
+                .userInfoEndpoint(userInfoEndpoint
+                        -> userInfoEndpoint.oidcUserService(this.oidcUserService())
+                )
                 .authorizedClientService(authorizedClientService())
                 .loginPage("/oauth_login")
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/logoutdone").deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true) ;
+                .invalidateHttpSession(true);
 //                .authorizationEndpoint()
 //                .baseUri("/oauth2/authorize-client")
 //                .authorizationRequestRepository(authorizationRequestRepository())
@@ -90,11 +99,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         String authorizationUri = issuer + "/v1/authorize";
         String tokenUri = issuer + "/v1/token";
         String jwkUri = issuer + "/v1/keys";
+        String userInfoUri = issuer + "/v1/userinfo";
 
         ClientRegistration reg = CommonOAuth2Provider.OKTA.getBuilder("okta")
                 .clientId(clientId)
                 .jwkSetUri(jwkUri)
                 .clientSecret(clientSecret)
+                .scope("groups", "openid", "email", "profile")
+                .userInfoUri(userInfoUri)
                 .authorizationUri(authorizationUri)
                 .tokenUri(tokenUri)
                 .build();
@@ -112,7 +124,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
 //        return accessTokenResponseClient;
 //    }
-
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
 
@@ -121,35 +132,74 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     //https://stackoverflow.com/questions/55894402/principalextractor-and-authoritiesextractor-are-not-getting-called
-   //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2login-advanced-map-authorities-oauth2userservice
+    //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2login-advanced-map-authorities-oauth2userservice
     //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2login-advanced-map-authorities-grantedauthoritiesmapper
-    
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         final OidcUserService delegate = new OidcUserService();
 
         return (userRequest) -> {
             // Delegate to the default implementation for loading a user
             OidcUser oidcUser = delegate.loadUser(userRequest);
-            LOG.debug("hit user service "+oidcUser.getClass().getName());
-           // super(authorities, idToken, userInfo, nameAttributeKey);
-            UserHybrid hybrid = new UserHybrid(oidcUser.getAuthorities(), 
+            LOG.debug("hit user service " + oidcUser.getClass().getName());
+            // super(authorities, idToken, userInfo, nameAttributeKey);
+             
+
+            OAuth2AccessToken accessToken = userRequest.getAccessToken();
+            LOG.info("\n*************************\n");
+            List<GrantedAuthority> mappedAuthorities = this.decodeGroups(accessToken.getTokenValue());
+ 
+            LOG.info("\n*************************\n");
+            
+             UserHybrid hybrid = new UserHybrid(mappedAuthorities,
                     oidcUser.getIdToken(), oidcUser.getUserInfo());
+            //  LOG.info( accessToken.getScopes() + "");
 
-//            OAuth2AccessToken accessToken = userRequest.getAccessToken();
-//            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-
+            //   LOG.info("scopes "+accessToken.getScopes());
+            //   LOG.info("\n********\n"+accessToken.getTokenValue()+"\n*****************\n");
+//            
             // TODO
             // 1) Fetch the authority information from the protected resource using accessToken
             // 2) Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
-
             // 3) Create a copy of oidcUser but use the mappedAuthorities instead
-           // oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
-          
-           
-           
-        
+            // oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
             
             return hybrid;
         };
     }
+
+    /**
+     * create a list of granted authorities. 
+     * This is a list of roles that exist in the accessToken. To get those
+     * entries into the token the server needs to be configured to include them
+     * 
+     * See the token folder in the docs folder for more information
+     * 
+     * 
+     * @param jwtToken
+     * @return 
+     */
+    private List<GrantedAuthority> decodeGroups(String jwtToken) {
+        String[] split_string = jwtToken.split("\\.");
+        java.util.Base64.Decoder decoder = java.util.Base64.getUrlDecoder();
+        String base64EncodedBody = split_string[1];
+
+        String t = new String(decoder.decode(base64EncodedBody));
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        try {
+            Map<String, Object> map = mapper.readValue(t, Map.class);
+            ArrayList<String> items = (ArrayList<String>) map.get("groups");
+            items.replaceAll(String::toUpperCase);
+            return   AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",",  items));
+              
+         
+        } catch (IOException ex) {
+            LOG.error("Io jackson error: " + ex.getMessage());
+        }
+        return null;
+
+        
+
+    }
+
 }
