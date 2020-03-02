@@ -131,52 +131,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 clientRegistrationRepository());
     }
 
-    //https://stackoverflow.com/questions/55894402/principalextractor-and-authoritiesextractor-are-not-getting-called
-    //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2login-advanced-map-authorities-oauth2userservice
-    //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2login-advanced-map-authorities-grantedauthoritiesmapper
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         final OidcUserService delegate = new OidcUserService();
 
         return (userRequest) -> {
-            // Delegate to the default implementation for loading a user
+
             OidcUser oidcUser = delegate.loadUser(userRequest);
             LOG.debug("hit user service " + oidcUser.getClass().getName());
-            // super(authorities, idToken, userInfo, nameAttributeKey);
-             
 
             OAuth2AccessToken accessToken = userRequest.getAccessToken();
-            LOG.info("\n*************************\n");
             List<GrantedAuthority> mappedAuthorities = this.decodeGroups(accessToken.getTokenValue());
- 
-            LOG.info("\n*************************\n");
-            
-             UserHybrid hybrid = new UserHybrid(mappedAuthorities,
+            UserHybrid hybrid = new UserHybrid(mappedAuthorities,
                     oidcUser.getIdToken(), oidcUser.getUserInfo());
-            //  LOG.info( accessToken.getScopes() + "");
 
-            //   LOG.info("scopes "+accessToken.getScopes());
-            //   LOG.info("\n********\n"+accessToken.getTokenValue()+"\n*****************\n");
-//            
-            // TODO
-            // 1) Fetch the authority information from the protected resource using accessToken
-            // 2) Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
-            // 3) Create a copy of oidcUser but use the mappedAuthorities instead
-            // oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
-            
             return hybrid;
         };
     }
 
     /**
-     * create a list of granted authorities. 
-     * This is a list of roles that exist in the accessToken. To get those
-     * entries into the token the server needs to be configured to include them
-     * 
-     * See the token folder in the docs folder for more information
-     * 
-     * 
+     * create a list of granted authorities. This is a list of roles that exist
+     * in the accessToken. To get those entries into the token the server needs
+     * to be configured to include them
+     *
+     * See the token folder in the docs folder for more information. Roles are
+     * just Okta groups
+     *
+     *
      * @param jwtToken
-     * @return 
+     * @return
      */
     private List<GrantedAuthority> decodeGroups(String jwtToken) {
         String[] split_string = jwtToken.split("\\.");
@@ -190,15 +172,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             Map<String, Object> map = mapper.readValue(t, Map.class);
             ArrayList<String> items = (ArrayList<String>) map.get("groups");
             items.replaceAll(String::toUpperCase);
-            return   AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",",  items));
-              
-         
+            return AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", items));
+
         } catch (IOException ex) {
             LOG.error("Io jackson error: " + ex.getMessage());
         }
         return null;
-
-        
 
     }
 
