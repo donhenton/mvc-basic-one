@@ -1,31 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
-<div class="row">
-    <div class="col-sm-4">
+<div class="container">
+	<div class="col-sm-3 well">
+		<h3>Login with:</h3>
+		<div class="list-group">
+			 
+                        <ul>
+                        <c:forEach items="${urls}" var="url" varStatus="status">
 
-        <form action="${pageContext.request.contextPath}/login" method="post" 
-              class="form-signin" role="form">
-
-
-<input type="hidden"  name="${_csrf.parameterName}"  value="${_csrf.token}"/>
-
-
-
-            <div class="form-group">
-                <label for="username">User name:</label> 
-                <input type="text" name="username" id="username" class="form-control" 
-                       placeholder="User name" required autofocus />
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label> <input type="password" name="password" id="password"
-                                                               class="form-control" placeholder="Password" required>
-            </div>
-            <input name="submit" type="submit" value="Submit" class="btn btn-success">
-        </form>
-        <c:if test="${'fail' eq param.auth}">
-            <p>
-            <div class="alert alert-danger">Login Failed!!! Reason :
-                ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</div>
-            </c:if>
-    </div>
+                        <li><a  class="list-group-item active" href="<c:out value="${url.value}"/>"><c:out value="${url.key}" /> Client</a></li>
+                        </c:forEach>
+                        </ul>
+		</div>
+	</div>
 </div>
+
+ 
