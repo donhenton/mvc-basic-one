@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .oauth2Login()
+                //this is where the user object is intercepted and replaced
                 .userInfoEndpoint(userInfoEndpoint
                         -> userInfoEndpoint.oidcUserService(this.oidcUserService())
                 )
@@ -73,15 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/logoutdone").deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
-//                .authorizationEndpoint()
-//                .baseUri("/oauth2/authorize-client")
-//                .authorizationRequestRepository(authorizationRequestRepository())
-//                .and()
-//                .tokenEndpoint()
-//                .accessTokenResponseClient(accessTokenResponseClient())
-//                .and()
-//                .defaultSuccessUrl("/loginSuccess")
-//                .failureUrl("/loginFailure");
+ 
 
     }
     private static List<String> clients = Arrays.asList("okta");
@@ -101,8 +94,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .clientId(clientId)
                 .jwkSetUri(jwkUri)
                 .clientSecret(clientSecret)
-               // .scope("groups", "openid", "email", "profile")
-              //  .userInfoUri(userInfoUri)
                 .authorizationUri(authorizationUri)
                 .tokenUri(tokenUri)
                 .build();

@@ -1,9 +1,16 @@
 # MVC-BASIC-ONE
 
+Demonstration of using Okta for authentication and authorization for a non 
+Spring Boot application.
 
-## upgrade to spring 4.6
+## Items to Note
+* Even though is an 'older' Spring application, security is configured via
+java in WebSecurityConfig
+* upgraded to Spring 5
+* The original Principal is intercepted and replace with UserHybrid see 
+WebSecurityConfig
 
-* had to add csrf protection <https://javadeveloperzone.com/common-error/http-status-403-not-verify-provided-csrf-token-session-not-found/>
+ 
 
 * https://www.baeldung.com/spring-security-5-oauth2-login
 * https://github.com/OhadR/oAuth2-sample/blob/master/oauth2-client/src/main/webapp/WEB-INF/spring-servlet.xml

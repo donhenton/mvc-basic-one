@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,11 +47,7 @@ public class MainController {
         OAuth2User item = token.getPrincipal();
         Map<String, Object> user = (Map<String, Object>) item.getAttributes();
         Collection<GrantedAuthority> authorities = token.getAuthorities();
-        /*   return "User Name: " + oauth2User.getName() + "<br/>"
-                + "User Authorities: " + oauth2User.getAuthorities() + "<br/>"
-                + "Client Name: " + authorizedClient.getClientRegistration().getClientName() + "<br/>"
-                + this.prettyPrintAttributes(oauth2User.getAttributes());
-         */
+        
         if (principal != null) {
         model.addAttribute("principal",principal.getClass().getName());
         }
@@ -67,12 +62,5 @@ public class MainController {
         return new ModelAndView("tiles.index");
     }
 
-    private String prettyPrintAttributes(Map<String, Object> attributes) {
-        String acc = "User Attributes: ";
-        for (String key : attributes.keySet()) {
-            Object value = attributes.get(key);
-            acc += key + " " + value.toString();
-        }
-        return acc;
-    }
+    
 }
