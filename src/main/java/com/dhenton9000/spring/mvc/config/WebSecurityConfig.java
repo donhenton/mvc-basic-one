@@ -13,8 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +150,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             Map<String, Object> map = mapper.readValue(t, Map.class);
             ArrayList<String> items = (ArrayList<String>) map.get("groups");
             items.replaceAll(String::toUpperCase);
+            //if tags use hasRole, need an entry starting with "ROLE_"
+            //allowing both at this time
+            items.addAll(items.stream().map(i -> "ROLE_"+i)
+                    .sorted(Comparator.naturalOrder())
+                    .collect(Collectors.toList()));
+            
             return AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", items));
 
         } catch (IOException ex) {

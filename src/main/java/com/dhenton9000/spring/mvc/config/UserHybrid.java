@@ -41,7 +41,7 @@ public class UserHybrid extends DefaultOidcUser implements UserDetails {
     @Override
     public String getPassword() {
         return null;
-
+         
     }
 
     @Override

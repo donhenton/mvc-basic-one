@@ -1,5 +1,6 @@
 package com.dhenton9000.spring.mvc.controllers;
 
+import com.dhenton9000.spring.mvc.config.UserHybrid;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Map;
@@ -22,45 +23,42 @@ public class MainController {
     /**
      *
      * https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth?_ga=2.101078273.1236934600.1583006660-154979438.1582567334
-     * 
-     * 
-     * 
+     *
+     *
+     *
      * @param principal
      * @param token
      * @param model
      * @param details
      * @return
      */
-   
- 
     @RequestMapping("/")
-    public ModelAndView handleIndexPage(Principal principal, 
-            OAuth2AuthenticationToken token,  Model model) {
+    public ModelAndView handleIndexPage(Principal principal,
+            OAuth2AuthenticationToken token, Model model) {
         //DefaultOidcUser
-        Object secObject =   SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      //  log.info("Request for default / url processed "+userX.getClass().getName());
+        Object secObject = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //  log.info("Request for default / url processed "+userX.getClass().getName());
         // OAuth2AuthenticationToken t = (OAuth2AuthenticationToken) principal;
         // the principal can be cast to OAuth2AuthenticationToken
-        
-         
-        
-        OAuth2User item = token.getPrincipal();
-        Map<String, Object> user = (Map<String, Object>) item.getAttributes();
+
+        UserHybrid user = (UserHybrid) secObject;
+
+  
+        Map<String, Object> attribs = (Map<String, Object>) user.getAttributes();
         Collection<GrantedAuthority> authorities = token.getAuthorities();
-        
+
         if (principal != null) {
-        model.addAttribute("principal",principal.getClass().getName());
+            model.addAttribute("principal", principal.getClass().getName());
+        } else {
+            model.addAttribute("principal", "principal is null");
         }
-        else {
-             model.addAttribute("principal","principal is null");
-        }
-         
-         model.addAttribute("secObject", secObject.getClass().getName());
-        model.addAttribute("token",token);
-        model.addAttribute("authorities",authorities);
+
+        model.addAttribute("secObject", secObject.getClass().getName());
+        model.addAttribute("token", token.getCredentials());
+        model.addAttribute("authorities", authorities);
+        model.addAttribute("attribs", attribs);
 
         return new ModelAndView("tiles.index");
     }
 
-    
 }
