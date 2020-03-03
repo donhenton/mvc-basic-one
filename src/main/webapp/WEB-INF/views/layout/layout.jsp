@@ -50,6 +50,13 @@
                             <li class="pull-right">
                                 <a href="<c:out value="${logoutUrl}"/>">Logout</a>
                             </li>
+                            <li class="pull-right">
+                                <a href="secured/admins">Admins Role Page</a>
+                            </li>
+                            <li class="pull-right">
+                                <a href="secured/service">Service Role Page</a>
+                            </li>
+                           
                         </sec:authorize>
                         
                     </ul>
