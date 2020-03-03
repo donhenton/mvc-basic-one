@@ -6,7 +6,7 @@
         <put-attribute name="body" value="" />
 		 
     </definition>
-     <definition name="tiles.login.failure" extends="tiles.base.definition">
+    <definition name="tiles.login.failure" extends="tiles.base.definition">
         <put-attribute name="title" value="Login Failure" />
         <put-attribute name="subTitle" value="Login Failue" />
         <put-attribute name="body"
@@ -25,7 +25,7 @@
                        value="/WEB-INF/views/pages/index_body.jsp" />
     </definition>
     <definition name="tiles.login" template="/WEB-INF/views/layout/login_layout.jsp">
-          <put-attribute name="title" value="Login" />
+        <put-attribute name="title" value="Login" />
         <put-attribute name="body"
                        value="/WEB-INF/views/pages/loginPage_body.jsp" />
     </definition>
@@ -36,11 +36,16 @@
         <put-attribute name="body"
                        value="/WEB-INF/views/pages/logoutPage_body.jsp" />
     </definition>
-    <definition name="tiles.securedSample" extends="tiles.base.definition">
-        <put-attribute name="title" value="Secure Page" />
-        <put-attribute name="subTitle" value="Secure Page" />
+    <definition name="tiles.secured.service" extends="tiles.base.definition">
+        <put-attribute name="title" value="Secure Page For Service Role" />
+        <put-attribute name="subTitle" value="Secure Page For Service Role" />
         <put-attribute name="body"
-                       value="/WEB-INF/views/pages/secured/securedSample_body.jsp" />
+                       value="/WEB-INF/views/pages/secured/securedService_body.jsp" />
     </definition>
-
+    <definition name="tiles.secured.admins" extends="tiles.base.definition">
+        <put-attribute name="title" value="Secure Page For Admins Role" />
+        <put-attribute name="subTitle" value="Secure Page For Admins Role" />
+        <put-attribute name="body"
+                       value="/WEB-INF/views/pages/secured/securedAdmins_body.jsp" />
+    </definition>
 </tiles-definitions> 
