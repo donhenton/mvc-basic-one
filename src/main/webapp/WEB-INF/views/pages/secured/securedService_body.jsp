@@ -15,7 +15,7 @@
 
  
 
-<div class="well">
+<div>
 This can only be seen if you have the <b>SERVICE</b> role
 Your username is <sec:authentication property="principal.username"/>
 </div>
