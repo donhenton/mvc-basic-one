@@ -24,9 +24,8 @@
         <put-attribute name="body"
                        value="/WEB-INF/views/pages/index_body.jsp" />
     </definition>
-    <definition name="tiles.login" extends="tiles.base.definition">
-        <put-attribute name="title" value="Login" />
-        <put-attribute name="subTitle" value="Login" />
+    <definition name="tiles.login" template="/WEB-INF/views/layout/login_layout.jsp">
+          <put-attribute name="title" value="Login" />
         <put-attribute name="body"
                        value="/WEB-INF/views/pages/loginPage_body.jsp" />
     </definition>

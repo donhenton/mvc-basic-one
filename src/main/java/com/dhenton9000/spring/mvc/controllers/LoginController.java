@@ -24,8 +24,8 @@ public class LoginController {
 
     private static String authorizationRequestBaseUri
             = "oauth2/authorization";
-    Map<String, String> oauth2AuthenticationUrls
-            = new HashMap<>();
+  //  Map<String, String> oauth2AuthenticationUrls
+  //          = new HashMap<>();
     
     
 
@@ -54,11 +54,11 @@ public class LoginController {
                 && ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
             clientRegistrations = (Iterable<ClientRegistration>) clientRegistrationRepository;
         }
-
-        clientRegistrations.forEach(registration
-                -> oauth2AuthenticationUrls.put(registration.getClientName(),
-                        authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
-        model.addAttribute("urls", oauth2AuthenticationUrls);
+        ClientRegistration registration = clientRegistrations.iterator().next();
+      //  clientRegistrations.forEach(registration
+       //         -> oauth2AuthenticationUrls.put(registration.getClientName(),
+         //               authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
+        model.addAttribute("url", authorizationRequestBaseUri + "/" + registration.getRegistrationId());
         
         return "tiles.login";
     }
