@@ -1,6 +1,8 @@
 package com.dhenton9000.spring.mvc.controllers;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -14,24 +16,11 @@ public class TokenRequest implements Serializable {
     private String clientId = null;
     private String scope = "openid";
     private UUID nonce = UUID.randomUUID();
-    private String responseType;
-    private String reponseMode;
+    private String[] responseType;
+    private String responseMode = "query";
+    private final String redirectURI = "http://local.awsdhenton.com:9000/debug/callback";
 
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    /**
-     * @param aSerialVersionUID the serialVersionUID to set
-     */
-    public static void setSerialVersionUID(long aSerialVersionUID) {
-        serialVersionUID = aSerialVersionUID;
-    }
-
-    
+ 
 
     /**
      * @return the state
@@ -106,29 +95,51 @@ public class TokenRequest implements Serializable {
     /**
      * @return the responseType
      */
-    public String getResponseType() {
+    public String[] getResponseType() {
         return responseType;
     }
 
     /**
      * @param responseType the responseType to set
      */
-    public void setResponseType(String responseType) {
+    public void setResponseType(String[] responseType) {
         this.responseType = responseType;
     }
 
     /**
-     * @return the reponseMode
+     * @return the responseMode
      */
-    public String getReponseMode() {
-        return reponseMode;
+    public String getResponseMode() {
+        return responseMode;
     }
 
     /**
-     * @param reponseMode the reponseMode to set
+     * @param responseMode the responseMode to set
      */
-    public void setReponseMode(String reponseMode) {
-        this.reponseMode = reponseMode;
+    public void setResponseMode(String responseMode) {
+        this.responseMode = responseMode;
     }
+    
+    public String getTypeString() {
+        return  String.join(",",  Arrays.asList(responseType));
+    }
+
+    @Override
+    public String toString() {
+        return "TokenRequest{" + "state=" + state + ", authorizeURI=" 
+                + authorizeURI + ", clientId=" + clientId 
+                + ", scope=" + scope + ", nonce=" + nonce 
+                + ", responseType=" +  String.join(",",  Arrays.asList(responseType))
+                + ", responseMode=" + responseMode + '}';
+    }
+
+    /**
+     * @return the redirectURI
+     */
+    public String getRedirectURI() {
+        return redirectURI;
+    }
+
+    
 
 }

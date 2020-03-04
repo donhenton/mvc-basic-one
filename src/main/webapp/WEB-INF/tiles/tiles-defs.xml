@@ -58,5 +58,13 @@
                        value="/WEB-INF/views/pages/debug/get_body.jsp" />
     </definition>
     
+         <definition name="tiles.debug.process.page" template="/WEB-INF/views/layout/login_layout.jsp">
+        <put-attribute name="title" value="Okta Process Display" />
+         <put-attribute name="footer" value="/WEB-INF/views/pages/debug/footer.jsp" />
+        <put-attribute name="subTitle" value="Token" />
+        <put-attribute name="body"
+                       value="/WEB-INF/views/pages/debug/process_body.jsp" />
+    </definition>
+    
     
 </tiles-definitions> 
