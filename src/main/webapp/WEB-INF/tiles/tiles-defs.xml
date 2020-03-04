@@ -26,6 +26,7 @@
     </definition>
     <definition name="tiles.login" template="/WEB-INF/views/layout/login_layout.jsp">
         <put-attribute name="title" value="Login" />
+        <put-attribute name="footer" value="" />
         <put-attribute name="body"
                        value="/WEB-INF/views/pages/loginPage_body.jsp" />
     </definition>
@@ -48,4 +49,14 @@
         <put-attribute name="body"
                        value="/WEB-INF/views/pages/secured/securedAdmins_body.jsp" />
     </definition>
+    
+     <definition name="tiles.debug.page" template="/WEB-INF/views/layout/login_layout.jsp">
+        <put-attribute name="title" value="Okta Debug Token" />
+         <put-attribute name="footer" value="/WEB-INF/views/pages/debug/footer.jsp" />
+        <put-attribute name="subTitle" value="Get Debug Token" />
+        <put-attribute name="body"
+                       value="/WEB-INF/views/pages/debug/get_body.jsp" />
+    </definition>
+    
+    
 </tiles-definitions> 

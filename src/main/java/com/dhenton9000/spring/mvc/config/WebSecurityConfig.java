@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOG.info("called configure");
 
         http.authorizeRequests()
-                .antMatchers("/oauth_login", "/login**", "/logout**", "/resources/**")
+                .antMatchers("/oauth_login", "/login**", "/logout**",  "/debug/**",     "/resources/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
