@@ -71,6 +71,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint(userInfoEndpoint
                         -> userInfoEndpoint.oidcUserService(this.oidcUserService())
                 )
+                
+                /*
+                https://docs.spring.io/spring-security/site/docs/5.2.2.RELEASE/reference/html/oauth2.html#oauth2login-javaconfig-wo-boot
+                .userInfoEndpoint(userInfoEndpoint ->
+                        userInfoEndpoint
+                            .userAuthoritiesMapper(this.userAuthoritiesMapper())
+                            .userService(this.oauth2UserService())
+                            .oidcUserService(this.oidcUserService())
+                            .customUserType(GitHubOAuth2User.class, "github")
+                    )
+                
+                */
                 .authorizedClientService(authorizedClientService())
                 .loginPage("/oauth_login")
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

@@ -28,3 +28,4 @@ WebSecurityConfig
 * https://www.devglan.com/spring-security/spring-boot-security-google-oauth
 * https://developer.okta.com/blog/2017/10/13/okta-groups-spring-security
 * https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1
+* https://docs.spring.io/spring-security/site/docs/5.2.2.RELEASE/reference/html/oauth2.html#oauth2login-javaconfig-wo-boot
