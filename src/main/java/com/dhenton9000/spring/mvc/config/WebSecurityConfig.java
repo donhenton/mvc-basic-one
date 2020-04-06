@@ -24,6 +24,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,6 +44,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @PropertySource(value = "classpath:config.properties")
@@ -50,7 +54,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebSecurityConfig.class);
-    private static String CLIENT_PROPERTY_KEY = "spring.security.oauth2.client.registration.";
+    public static String CLIENT_PROPERTY_KEY = "spring.security.oauth2.client.registration.";
 
     @Autowired
     private Environment env;
@@ -93,6 +97,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     private static List<String> clients = Arrays.asList("okta");
 
+    
+    
+     
+    public static final String RECEIVE_TIMEOUT = "30000";
+    public static final String CONNECTION_TIMEOUT = "30000";
+
+    
+    @Bean
+    public RestTemplate getRestTemplate() {
+        
+            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+            requestFactory.setConnectTimeout(Integer.parseInt( CONNECTION_TIMEOUT));
+            requestFactory.setReadTimeout(Integer.parseInt( RECEIVE_TIMEOUT));
+            RestTemplate restTemplate = new RestTemplate(requestFactory);
+            restTemplate.setErrorHandler(new ResponseErrorHandler() {
+                @Override
+                public boolean hasError(ClientHttpResponse arg0) throws IOException {
+                    return false;
+                }
+
+                @Override
+                public void handleError(ClientHttpResponse arg0) throws IOException {
+                    //
+                }
+            });
+
+        
+        return restTemplate;
+    }
+    
+    
+    
+    
+    
+    
+    
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         List<ClientRegistration> registrations = new ArrayList<ClientRegistration>();
@@ -112,6 +152,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenUri(tokenUri)
                 .build();
         registrations.add(reg);
+        
         return new InMemoryClientRegistrationRepository(registrations);
     }
 
@@ -121,6 +162,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return new InMemoryOAuth2AuthorizedClientService(
                 clientRegistrationRepository());
+        
     }
 
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
@@ -132,7 +174,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             OAuth2AccessToken accessToken = userRequest.getAccessToken();
             List<GrantedAuthority> mappedAuthorities = this.decodeGroups(accessToken.getTokenValue());
             UserHybrid hybrid = new UserHybrid(mappedAuthorities,
-                    oidcUser.getIdToken(), oidcUser.getUserInfo());
+                    oidcUser.getIdToken(), oidcUser.getUserInfo(),userRequest.getAccessToken());
 
             return hybrid;
         };

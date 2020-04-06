@@ -56,6 +56,9 @@
                             <li class="pull-right">
                                 <a href="secured/service">Service Role Page</a>
                             </li>
+                            <li class="pull-right">
+                                <a href="secured/tokens">Tokens</a>
+                            </li>
                            
                         </sec:authorize>
                         

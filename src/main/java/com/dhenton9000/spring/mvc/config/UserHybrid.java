@@ -6,6 +6,7 @@ import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
@@ -18,24 +19,41 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
  */
 public class UserHybrid extends DefaultOidcUser implements UserDetails {
 
+    private final OAuth2AccessToken accessToken;
+
     public UserHybrid(Collection<? extends GrantedAuthority> authorities,
             OidcIdToken idToken, OidcUserInfo userInfo, String nameAttributeKey) {
         super(authorities, idToken, userInfo, nameAttributeKey);
+        accessToken = null;
     }
 
     public UserHybrid(Collection<? extends GrantedAuthority> authorities,
             OidcIdToken idToken) {
         super(authorities, idToken);
+        accessToken = null;
     }
 
     public UserHybrid(Collection<? extends GrantedAuthority> authorities,
             OidcIdToken idToken, String nameAttributeKey) {
         super(authorities, idToken, nameAttributeKey);
+        accessToken = null;
     }
 
     public UserHybrid(Collection<? extends GrantedAuthority> authorities,
             OidcIdToken idToken, OidcUserInfo userInfo) {
         super(authorities, idToken, userInfo);
+        accessToken = null;
+    }
+    
+    public UserHybrid(Collection<? extends GrantedAuthority> authorities,
+            OidcIdToken idToken, OidcUserInfo userInfo,OAuth2AccessToken accessToken) {
+        super(authorities, idToken, userInfo);
+        this.accessToken = accessToken;
+        
+    }
+    
+    public OAuth2AccessToken getAccessToken() {
+        return this.accessToken;
     }
 
     @Override

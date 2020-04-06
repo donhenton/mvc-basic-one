@@ -48,4 +48,11 @@
         <put-attribute name="body"
                        value="/WEB-INF/views/pages/secured/securedAdmins_body.jsp" />
     </definition>
+     <definition name="tiles.secured.userinfo" extends="tiles.base.definition">
+        <put-attribute name="title" value="Secure Page For User Info" />
+        <put-attribute name="subTitle" value="User Info" />
+        <put-attribute name="body"
+                       value="/WEB-INF/views/pages/secured/securedUserInfo_body.jsp" />
+    </definition>
+    
 </tiles-definitions> 
