@@ -20,6 +20,7 @@
     <li>ClientName:  ${clientName}</li>
     <li>RegId: ${regId}</li>
     <li>AuthUri: ${authUri}</li>
+ <li>Client: ${client}</li>
 </ol>
 <div>
     <textarea>

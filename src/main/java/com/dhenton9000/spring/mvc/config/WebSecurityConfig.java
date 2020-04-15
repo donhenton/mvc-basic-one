@@ -98,39 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static List<String> clients = Arrays.asList("okta");
 
     
-    
-     
-    public static final String RECEIVE_TIMEOUT = "30000";
-    public static final String CONNECTION_TIMEOUT = "30000";
-
-    
-    @Bean
-    public RestTemplate getRestTemplate() {
         
-            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-            requestFactory.setConnectTimeout(Integer.parseInt( CONNECTION_TIMEOUT));
-            requestFactory.setReadTimeout(Integer.parseInt( RECEIVE_TIMEOUT));
-            RestTemplate restTemplate = new RestTemplate(requestFactory);
-            restTemplate.setErrorHandler(new ResponseErrorHandler() {
-                @Override
-                public boolean hasError(ClientHttpResponse arg0) throws IOException {
-                    return false;
-                }
-
-                @Override
-                public void handleError(ClientHttpResponse arg0) throws IOException {
-                    //
-                }
-            });
-
-        
-        return restTemplate;
-    }
-    
-    
-    
-    
-    
     
     
     @Bean
